@@ -62,26 +62,30 @@ func (r *AzureContainerRegistryReconciler) Reconcile(ctx context.Context, req ct
 	// Create a DefaultAzureCredential using managed identity.
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		log.FromContext(ctx).Error(err, "Error creating Azure credential:", err)
+		log.FromContext(ctx).Error(err, "Error creating Azure credential")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	registryURL := fmt.Sprintf("https://%s.azurecr.io", acr.Name)
+	registryURL := fmt.Sprintf("https://%s.azurecr.io", acr.Spec.Name)
 
 	registryClient, err := azcontainerregistry.NewClient(registryURL, cred, nil)
 	if err != nil {
-		log.FromContext(ctx).Error(err, "Error creating Azure Container Registry client:", err)
+		log.FromContext(ctx).Error(err, "Error creating Azure Container Registry client")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
 	pager := registryClient.NewListRepositoriesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
+			log.FromContext(ctx).Error(err, "failed to advance page")
+			return ctrl.Result{}, client.IgnoreNotFound(err)
 		}
 		for _, v := range page.Repositories.Names {
-			fmt.Printf("repository: %s\n", *v)
+			log.FromContext(ctx).Info(fmt.Sprintf("repository: %s\n", *v))
 		}
 	}
+
 	return ctrl.Result{}, nil
 }
 
