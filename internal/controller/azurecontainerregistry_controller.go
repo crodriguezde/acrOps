@@ -18,12 +18,15 @@ package controller
 
 import (
 	"context"
+	"fmt"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 	deploymentsv1beta1 "github.com/crodriguezde/acrops.git/api/v1beta1"
 )
 
@@ -49,8 +52,36 @@ type AzureContainerRegistryReconciler struct {
 func (r *AzureContainerRegistryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var acr deploymentsv1beta1.AzureContainerRegistry
 
+	if err := r.Get(ctx, req.NamespacedName, &acr); err != nil {
+		log.FromContext(ctx).Error(err, "Unable to fetch Ping")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	// Create a DefaultAzureCredential using managed identity.
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.FromContext(ctx).Error(err, "Error creating Azure credential:", err)
+	}
+
+	registryURL := fmt.Sprintf("https://%s.azurecr.io", acr.Name)
+
+	registryClient, err := azcontainerregistry.NewClient(registryURL, cred, nil)
+	if err != nil {
+		log.FromContext(ctx).Error(err, "Error creating Azure Container Registry client:", err)
+	}
+
+	pager := registryClient.NewListRepositoriesPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Repositories.Names {
+			fmt.Printf("repository: %s\n", *v)
+		}
+	}
 	return ctrl.Result{}, nil
 }
 
