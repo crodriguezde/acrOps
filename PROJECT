@@ -20,4 +20,31 @@ resources:
   kind: AzureContainerRegistry
   path: github.com/crodriguezde/acrops.git/api/v1beta1
   version: v1beta1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: acrops.io
+  group: deployments
+  kind: ACRDeployment
+  path: github.com/crodriguezde/acrops.git/api/v1beta1
+  version: v1beta1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: acrops.io
+  group: deployments
+  kind: ACRDaemonSet
+  path: github.com/crodriguezde/acrops.git/api/v1beta1
+  version: v1beta1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: acrops.io
+  group: deployments
+  kind: ACRStatefulSet
+  path: github.com/crodriguezde/acrops.git/api/v1beta1
+  version: v1beta1
 version: "3"

@@ -1,0 +1,12 @@
+apiVersion: deployments.acrops.io/v1beta1
+kind: ACRStatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: acrstatefulset
+    app.kubernetes.io/instance: acrstatefulset-sample
+    app.kubernetes.io/part-of: acrops
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: acrops
+  name: acrstatefulset-sample
+spec:
+  # TODO(user): Add fields here

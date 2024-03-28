@@ -1,4 +1,7 @@
 ## Append samples of your project ##
 resources:
 - deployments_v1beta1_azurecontainerregistry.yaml
+- deployments_v1beta1_acrdeployment.yaml
+- deployments_v1beta1_acrdaemonset.yaml
+- deployments_v1beta1_acrstatefulset.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

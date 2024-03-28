@@ -17,25 +17,24 @@ limitations under the License.
 package v1beta1
 
 import (
-	//appsv1 "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// AzureContainerRegistrySpec defines the desired state of AzureContainerRegistry
-type AzureContainerRegistrySpec struct {
+// ACRDeploymentSpec defines the desired state of ACRDeployment
+type ACRDeploymentSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	Name string `json:"name,omitempty"`
-
-	//Object *appsv1.Deployment `json:"object,omitempty"`
+	Image      AzureContainerRegistryImage `json:"image,omitempty"`
+	Deployment *appsv1.Deployment          `json:"deployment,omitempty"`
 }
 
-// AzureContainerRegistryStatus defines the observed state of AzureContainerRegistry
-type AzureContainerRegistryStatus struct {
+// ACRDeploymentStatus defines the observed state of ACRDeployment
+type ACRDeploymentStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 }
@@ -43,29 +42,24 @@ type AzureContainerRegistryStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// AzureContainerRegistry is the Schema for the azurecontainerregistries API
-type AzureContainerRegistry struct {
+// ACRDeployment is the Schema for the acrdeployments API
+type ACRDeployment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AzureContainerRegistrySpec   `json:"spec,omitempty"`
-	Status AzureContainerRegistryStatus `json:"status,omitempty"`
+	Spec   ACRDeploymentSpec   `json:"spec,omitempty"`
+	Status ACRDeploymentStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// AzureContainerRegistryList contains a list of AzureContainerRegistry
-type AzureContainerRegistryList struct {
+// ACRDeploymentList contains a list of ACRDeployment
+type ACRDeploymentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AzureContainerRegistry `json:"items"`
+	Items           []ACRDeployment `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&AzureContainerRegistry{}, &AzureContainerRegistryList{})
-}
-
-type AzureContainerRegistryImage struct {
-	Name string `json:"name,omitempty"`
-	Tag  string `json:"tag,omitempty"`
+	SchemeBuilder.Register(&ACRDeployment{}, &ACRDeploymentList{})
 }

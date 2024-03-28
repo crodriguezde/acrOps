@@ -1,0 +1,27 @@
+# permissions for end users to view acrdaemonsets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: acrdaemonset-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: acrops
+    app.kubernetes.io/part-of: acrops
+    app.kubernetes.io/managed-by: kustomize
+  name: acrdaemonset-viewer-role
+rules:
+- apiGroups:
+  - deployments.acrops.io
+  resources:
+  - acrdaemonsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - deployments.acrops.io
+  resources:
+  - acrdaemonsets/status
+  verbs:
+  - get

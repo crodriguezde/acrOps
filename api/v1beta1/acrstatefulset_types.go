@@ -17,25 +17,24 @@ limitations under the License.
 package v1beta1
 
 import (
-	//appsv1 "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// AzureContainerRegistrySpec defines the desired state of AzureContainerRegistry
-type AzureContainerRegistrySpec struct {
+// ACRStatefulSetSpec defines the desired state of ACRStatefulSet
+type ACRStatefulSetSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	Name string `json:"name,omitempty"`
-
-	//Object *appsv1.Deployment `json:"object,omitempty"`
+	Image       AzureContainerRegistryImage `json:"image,omitempty"`
+	StatefulSet *appsv1.StatefulSet         `json:"statefulSet,omitempty"`
 }
 
-// AzureContainerRegistryStatus defines the observed state of AzureContainerRegistry
-type AzureContainerRegistryStatus struct {
+// ACRStatefulSetStatus defines the observed state of ACRStatefulSet
+type ACRStatefulSetStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 }
@@ -43,29 +42,24 @@ type AzureContainerRegistryStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// AzureContainerRegistry is the Schema for the azurecontainerregistries API
-type AzureContainerRegistry struct {
+// ACRStatefulSet is the Schema for the acrstatefulsets API
+type ACRStatefulSet struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AzureContainerRegistrySpec   `json:"spec,omitempty"`
-	Status AzureContainerRegistryStatus `json:"status,omitempty"`
+	Spec   ACRStatefulSetSpec   `json:"spec,omitempty"`
+	Status ACRStatefulSetStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// AzureContainerRegistryList contains a list of AzureContainerRegistry
-type AzureContainerRegistryList struct {
+// ACRStatefulSetList contains a list of ACRStatefulSet
+type ACRStatefulSetList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AzureContainerRegistry `json:"items"`
+	Items           []ACRStatefulSet `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&AzureContainerRegistry{}, &AzureContainerRegistryList{})
-}
-
-type AzureContainerRegistryImage struct {
-	Name string `json:"name,omitempty"`
-	Tag  string `json:"tag,omitempty"`
+	SchemeBuilder.Register(&ACRStatefulSet{}, &ACRStatefulSetList{})
 }

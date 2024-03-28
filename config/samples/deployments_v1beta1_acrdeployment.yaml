@@ -1,0 +1,12 @@
+apiVersion: deployments.acrops.io/v1beta1
+kind: ACRDeployment
+metadata:
+  labels:
+    app.kubernetes.io/name: acrdeployment
+    app.kubernetes.io/instance: acrdeployment-sample
+    app.kubernetes.io/part-of: acrops
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: acrops
+  name: acrdeployment-sample
+spec:
+  # TODO(user): Add fields here

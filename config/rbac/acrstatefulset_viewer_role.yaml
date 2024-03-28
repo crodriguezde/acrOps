@@ -1,0 +1,27 @@
+# permissions for end users to view acrstatefulsets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: acrstatefulset-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: acrops
+    app.kubernetes.io/part-of: acrops
+    app.kubernetes.io/managed-by: kustomize
+  name: acrstatefulset-viewer-role
+rules:
+- apiGroups:
+  - deployments.acrops.io
+  resources:
+  - acrstatefulsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - deployments.acrops.io
+  resources:
+  - acrstatefulsets/status
+  verbs:
+  - get
